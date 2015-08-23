@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="genericActionSupport"
+		class="com.zhiye.web.action.GenericActionSupport" lazy-init="true"
+		abstract="true">
+	</bean>
+
+	<bean id="loginAction" scope="prototype"
+		class="com.zhiye.web.action.LoginAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="articleTypeService" ref="articleTypeService" />
+		<property name="roleService" ref="roleService" />
+		<property name="articleService" ref="articleService" />
+		<property name="premissionService" ref="premissionService" />
+		<property name="copService" ref="corporationService" />
+	</bean>
+
+	<bean id="articleTypeAction" scope="prototype"
+		class="com.zhiye.web.action.ArticleTypeAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="articleService" ref="articleService" />
+		<property name="articleTypeService" ref="articleTypeService" />
+		<property name="premissionService" ref="premissionService" />
+	</bean>
+
+	<bean id="articleAction" scope="prototype"
+		class="com.zhiye.web.action.ArticleAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="articleTypeService" ref="articleTypeService" />
+		<property name="articleService" ref="articleService" />
+		<property name="partmentService" ref="partmentService" />
+		<property name="roleService" ref="roleService" />
+		<property name="premissionService" ref="premissionService" />
+	</bean>
+	<bean id="userAction" scope="prototype"
+		class="com.zhiye.web.action.UserAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="partmentService" ref="partmentService" />
+		<property name="roleService" ref="roleService" />
+		<property name="companyService" ref="companyService" />
+		<property name="corporationService" ref="corporationService" />
+	</bean>
+
+	<bean id="roleAction" scope="prototype"
+		class="com.zhiye.web.action.RoleAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="roleService" ref="roleService" />
+		<property name="articleTypeService" ref="articleTypeService" />
+		<property name="premissionService" ref="premissionService" />
+		<property name="rolePremissionService"
+			ref="rolePremissionService" />
+	</bean>
+
+	<bean id="partmentAction" scope="prototype"
+		class="com.zhiye.web.action.PartmentAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="partmentService" ref="partmentService" />
+	</bean>
+
+	<bean id="productAction" scope="prototype"
+		class="com.zhiye.web.action.ProductAction"
+		parent="genericActionSupport">
+		<property name="productService" ref="productService" />
+	</bean>
+
+	<bean id="dictionaryAction" scope="prototype"
+		class="com.zhiye.web.action.DictionaryAction"
+		parent="genericActionSupport">
+		<property name="dictionaryService" ref="dictionaryService" />
+		<property name="dictclassService" ref="dictclassService" />
+	</bean>
+
+	<bean id="linkAction" scope="prototype"
+		class="com.zhiye.web.action.LinkAction"
+		parent="genericActionSupport">
+		<property name="linkService" ref="linkService" />
+	</bean>
+
+	<bean id="corporationAction" scope="prototype"
+		class="com.zhiye.web.action.CorporationAction"
+		parent="genericActionSupport">
+		<property name="corporationService" ref="corporationService" />
+		<property name="dictionaryService" ref="dictionaryService" />
+		<property name="productService" ref="productService" />
+		<property name="corporationProductService"
+			ref="corporationProductService" />
+	</bean>
+	<bean id="indexAction" scope="prototype"
+		class="com.zhiye.web.action.IndexAction"
+		parent="genericActionSupport">
+		<property name="userService" ref="userService" />
+		<property name="articleTypeService" ref="articleTypeService" />
+		<property name="articleService" ref="articleService" />
+		<property name="partmentService" ref="partmentService" />
+		<property name="linkService" ref="linkService" />
+	</bean>
+
+	<bean id="msgAction" scope="prototype"
+		class="com.zhiye.web.action.MsgAction"
+		parent="genericActionSupport">
+		<property name="msgService" ref="msgService" />
+		<property name="userService" ref="userService" />
+		<property name="articleService" ref="articleService" />
+	</bean>
+	<bean id="messageAction" scope="prototype"
+		class="com.zhiye.web.action.MessageAction"
+		parent="genericActionSupport">
+		<property name="messageService" ref="messageService" />
+		<property name="corporationService" ref="corporationService" />
+		<property name="userService" ref="userService" />
+		<property name="partmentService" ref="partmentService" />
+				<property name="contactTypeService" ref="contactTypeService" />
+		<property name="contactAndTypeService" ref="contactAndTypeService" />
+		<property name="contactService" ref="contactService" />
+	</bean>
+	<bean id="imageAction" scope="prototype"
+		class="com.zhiye.web.action.ImageAction"
+		parent="genericActionSupport">
+	</bean>
+
+	<bean id="reportAction" scope="prototype"
+		class="com.zhiye.web.action.ReportAction"
+		parent="genericActionSupport">
+		<property name="corporationService" ref="corporationService" />
+		<property name="indexService" ref="indexService" />
+		<property name="indexProdService" ref="indexProdService" />
+		<property name="dictionaryService" ref="dictionaryService" />
+		<property name="articleService" ref="articleService" />
+		<property name="corporationProductService"
+			ref="corporationProductService" />
+		<property name="productService" ref="productService" />
+	</bean>
+
+	<bean id="contactTypeAction" scope="prototype"
+		class="com.zhiye.web.action.ContactTypeAction"
+		parent="genericActionSupport">
+		<property name="contactTypeService" ref="contactTypeService" />
+	</bean>
+	<bean id="contactAction" scope="prototype"
+		class="com.zhiye.web.action.ContactAction"
+		parent="genericActionSupport">
+		<property name="contactTypeService" ref="contactTypeService" />
+		<property name="contactAndTypeService" ref="contactAndTypeService" />
+		<property name="contactService" ref="contactService" />
+	</bean>
+</beans>

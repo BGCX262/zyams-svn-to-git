@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="commonService" abstract="true"
+		class="com.zhiye.services.CommonService">
+	</bean>
+
+	<bean id="articleService" class="com.zhiye.services.ArticleService"
+		parent="commonService">
+		<property name="articleDao" ref="articleDao"></property>
+		<property name="articleTypeDao" ref="articleTypeDao"></property>
+	</bean>
+
+	<bean id="articleTypeService"
+		class="com.zhiye.services.ArticleTypeService"
+		parent="commonService">
+		<property name="articleTypeDao" ref="articleTypeDao"></property>
+	</bean>
+
+	<bean id="companyService" class="com.zhiye.services.CompanyService"
+		parent="commonService">
+		<property name="companyDao" ref="companyDao"></property>
+	</bean>
+
+	<bean id="partmentService"
+		class="com.zhiye.services.PartmentService" parent="commonService">
+		<property name="partmentDao" ref="partmentDao"></property>
+	</bean>
+
+	<bean id="premissionService"
+		class="com.zhiye.services.PremissionService" parent="commonService">
+		<property name="premissionDao" ref="premissionDao"></property>
+	</bean>
+
+	<bean id="rolePremissionService"
+		class="com.zhiye.services.RolePremissionService"
+		parent="commonService">
+		<property name="rolePremissionDao" ref="rolePremissionDao"></property>
+	</bean>
+
+	<bean id="roleService" class="com.zhiye.services.RoleService"
+		parent="commonService">
+		<property name="roleDao" ref="roleDao"></property>
+	</bean>
+
+	<bean id="userService" class="com.zhiye.services.UserService"
+		parent="commonService">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<bean id="productService" class="com.zhiye.services.ProductService"
+		parent="commonService">
+		<property name="productDAO" ref="productDAO"></property>
+	</bean>
+
+	<bean id="dictionaryService"
+		class="com.zhiye.services.DictionaryService" parent="commonService">
+		<property name="dictionaryDAO" ref="dictionaryDAO"></property>
+	</bean>
+
+	<bean id="dictclassService"
+		class="com.zhiye.services.DictclassService" parent="commonService">
+		<property name="dictclassDAO" ref="dictclassDAO"></property>
+	</bean>
+
+	<bean id="linkService" class="com.zhiye.services.LinkService"
+		parent="commonService">
+		<property name="linkDao" ref="linkDAO"></property>
+	</bean>
+
+	<bean id="siteService" class="com.zhiye.services.SiteService"
+		parent="commonService">
+		<property name="siteDao" ref="siteDAO"></property>
+	</bean>
+
+	<bean id="corporationService"
+		class="com.zhiye.services.CorporationService"
+		parent="commonService">
+		<property name="corporationDAO" ref="corporationDAO"></property>
+	</bean>
+
+	<bean id="corporationProductService"
+		class="com.zhiye.services.CorporationProductService"
+		parent="commonService">
+		<property name="corporationProductDAO"
+			ref="corporationProductDAO">
+		</property>
+	</bean>
+	<bean id="msgService" class="com.zhiye.services.MsgService"
+		parent="commonService">
+		<property name="msgDao" ref="msgDAO"></property>
+	</bean>
+	<bean id="messageService" class="com.zhiye.services.MessageService"
+		parent="commonService">
+		<property name="messageDao" ref="messageDao"></property>
+	</bean>
+	<bean id="indexService" class="com.zhiye.services.IndexService"
+		parent="commonService">
+		<property name="indexDAO" ref="indexDAO"></property>
+	</bean>
+	<bean id="indexProdService"
+		class="com.zhiye.services.IndexProdService" parent="commonService">
+		<property name="indexProdDAO" ref="indexProdDAO"></property>
+	</bean>
+
+	<bean id="contactService" class="com.zhiye.services.ContactService"
+		parent="commonService">
+		<property name="contactDAO" ref="contactDAO"></property>
+	</bean>
+	<bean id="contactTypeService"
+		class="com.zhiye.services.ContactTypeService"
+		parent="commonService">
+		<property name="contactTypeDAO" ref="contactTypeDAO"></property>
+	</bean>
+	<bean id="contactAndTypeService"
+		class="com.zhiye.services.ContactAndTypeService"
+		parent="commonService">
+		<property name="contactAndTypeDAO" ref="contactAndTypeDAO"></property>
+	</bean>
+</beans>

@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="admin" extends="zhiye" namespace="/">
+		<!-- article type action  -->
+		<action name="getChildTypes" class="articleTypeAction"
+			method="getChildTypes">
+
+		</action>
+		<action name="listArticleTypes" class="articleTypeAction"
+			method="listArticleTypes">
+			<result name="success">articleTypes.jsp</result>
+		</action>
+
+		<action name="removeArticleType" class="articleTypeAction"
+			method="removeArticleType">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeArticleTypes" class="articleTypeAction"
+			method="removeArticleTypes">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editArticleType" class="articleTypeAction"
+			method="editArticleType">
+
+			<result name="success">editArticleType.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditArticleType" class="articleTypeAction"
+			method="doEditArticleType">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="getChildrenTypes" class="articleTypeAction"
+			method="getChildrenTypes">
+
+			<result name="success">childrenTypes.jsp</result>
+		</action>
+
+		<action name="addArticleType" class="articleTypeAction"
+			method="addArticleType">
+
+			<result name="add">addArticleType.jsp</result>
+		</action>
+		<action name="doAddArticleType" class="articleTypeAction"
+			method="doAddArticleType">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="lookupParentTypes" class="articleTypeAction"
+			method="lookupParentTypes">
+
+			<result name="success">typeSelect.jsp</result>
+		</action>
+		<!-- ajax -->
+		<action name="getTypeHTMLS" class="articleTypeAction"
+			method="getTypeHTMLS">
+
+		</action>
+		<!-- article action -->
+		<action name="listArticles" class="articleAction"
+			method="listArticles">
+			<result name="success">newArticleList.jsp</result>
+		</action>
+		<action name="uploadPicture" class="imageAction"
+			method="upload">
+			<result name="success">selectPicture.jsp</result>
+		</action>
+		<action name="showArticleList" class="articleAction"
+			method="showArticleList">
+			<result name="success">listArticles.jsp</result>
+		</action>
+		<action name="showSinglePage" class="articleAction"
+			method="showSinglePage">
+
+			<result name="success">editArticle.jsp</result>
+		</action>
+		<action name="removeArticle" class="articleAction"
+			method="removeArticle">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeArticles" class="articleAction"
+			method="removeArticles">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editArticle" class="articleAction"
+			method="editArticle">
+
+			<result name="success">editArticle.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditArticle" class="articleAction"
+			method="doEditArticle">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="addArticle" class="articleAction"
+			method="addArticle">
+
+			<result name="add">addArticle.jsp</result>
+		</action>
+		<action name="doAddArticle" class="articleAction"
+			method="doAddArticle">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="lookupTypes" class="articleAction"
+			method="lookupTypes">
+
+			<result name="success">typeSelect.jsp</result>
+		</action>
+		<action name="manageArticle" class="articleAction"
+			method="manageArticle">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="manageArticles" class="articleAction"
+			method="manageArticles">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="showUnCheckArticleList" class="articleAction"
+			method="showUnCheckArticleList">
+			<result name="success">listUncheckedArticles.jsp</result>
+		</action>
+		<!-- user action -->
+		<action name="listUsers" class="userAction"
+			method="listUsers">
+
+			<result name="success">listUsers.jsp</result>
+		</action>
+		<action name="removeUser" class="userAction"
+			method="removeUser">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeUsers" class="userAction"
+			method="removeUsers">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editUser" class="userAction" method="editUser">
+			<result name="success">editUser.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+
+		</action>
+
+		<action name="doEditUser" class="userAction"
+			method="doEditUser">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="addUser" class="userAction" method="addUser">
+			<result name="add">addUser.jsp</result>
+
+		</action>
+		<action name="doAddUser" class="userAction"
+			method="doAddUser">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="lookupCompanysAndUsers" class="userAction"
+			method="lookupCompanysAndUsers">
+			<result name="success">selectUsers.jsp</result>
+		</action>
+		<!-- role action -->
+		<action name="listRoles" class="roleAction"
+			method="listRoles">
+
+			<result name="success">listRoles.jsp</result>
+		</action>
+		<action name="removeRole" class="roleAction"
+			method="removeRole">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeRoles" class="roleAction"
+			method="removeRoles">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editRole" class="roleAction" method="editRole">
+			<result name="success">editRole.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+
+		</action>
+
+		<action name="doEditRole" class="roleAction"
+			method="doEditRole">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="addRole" class="roleAction" method="addRole">
+			<result name="add">addRole.jsp</result>
+
+		</action>
+		<action name="doAddRole" class="roleAction"
+			method="doAddRole">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<!-- partment action -->
+		<action name="listPartments" class="partmentAction"
+			method="listPartments">
+
+			<result name="success">listPartments.jsp</result>
+		</action>
+		<action name="removePartment" class="partmentAction"
+			method="removePartment">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removePartments" class="partmentAction"
+			method="removePartments">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editPartment" class="partmentAction"
+			method="editPartment">
+
+			<result name="success">editPartment.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditPartment" class="partmentAction"
+			method="doEditPartment">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="addPartment" class="partmentAction"
+			method="addPartment">
+
+			<result name="add">addPartment.jsp</result>
+		</action>
+		<action name="doAddPartment" class="partmentAction"
+			method="doAddPartment">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<!-- product list-->
+		<action name="listProducts" class="productAction"
+			method="listProducts">
+
+			<result name="success">listProduct.jsp</result>
+		</action>
+
+		<action name="addProduct" class="productAction"
+			method="addProduct">
+
+			<result name="add">addProduct.jsp</result>
+		</action>
+
+		<action name="doAddProduct" class="productAction"
+			method="doAddProduct">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeProduct" class="productAction"
+			method="removeProduct">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeProducts" class="productAction"
+			method="removeProducts">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="editProduct" class="productAction"
+			method="editProduct">
+
+			<result name="success">editProduct.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditProduct" class="productAction"
+			method="doEditProduct">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<!---dictionary-->
+		<action name="listTrades" class="dictionaryAction"
+			method="listDictionary">
+
+			<result name="success">listTrade.jsp</result>
+		</action>
+		<action name="listAreas" class="dictionaryAction"
+			method="listDictionary">
+
+			<result name="success">listArea.jsp</result>
+		</action>
+
+		<action name="selectAddArea" class="dictionaryAction"
+			method="selectAddArea">
+			<result name="success">addTrade.jsp</result>
+		</action>
+
+		<action name="addTrade" class="dictionaryAction"
+			method="addDictionary">
+
+			<result name="add">addTrade.jsp</result>
+		</action>
+		<action name="addArea" class="dictionaryAction"
+			method="addDictionary">
+			<result name="add">addArea.jsp</result>
+		</action>
+
+		<action name="doAddTrade" class="dictionaryAction"
+			method="doAddDictionary">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doAddArea" class="dictionaryAction"
+			method="doAddDictionary">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="editTrade" class="dictionaryAction"
+			method="editDictionary">
+
+			<result name="success">editTrade.jsp</result>
+		</action>
+
+		<action name="editArea" class="dictionaryAction"
+			method="editDictionary">
+
+			<result name="success">editArea.jsp</result>
+		</action>
+
+		<action name="doEditTrade" class="dictionaryAction"
+			method="doEditDictionary">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditArea" class="dictionaryAction"
+			method="doEditDictionary">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeTrade" class="dictionaryAction"
+			method="removeDictionary">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeArea" class="dictionaryAction"
+			method="removeDictionary">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeTrades" class="dictionaryAction"
+			method="removeDictionarys">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="removeAreas" class="dictionaryAction"
+			method="removeDictionarys">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+
+		<!-- link action -->
+		<action name="listLinks" class="linkAction"
+			method="listLinks">
+
+			<result name="success">listLinks.jsp</result>
+		</action>
+		<action name="removeLink" class="linkAction"
+			method="removeLink">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeLinks" class="linkAction"
+			method="removeLinks">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editLink" class="linkAction" method="editLink">
+			<result name="success">editLink.jsp</result>
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditLink" class="linkAction"
+			method="doEditLink">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="addLink" class="linkAction" method="addLink">
+			<result name="add">addLink.jsp</result>
+
+		</action>
+		<action name="doAddLink" class="linkAction"
+			method="doAddLink">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<!--corporation-->
+		<action name="listCorporation" class="corporationAction"
+			method="listCorporation">
+			<result name="success">listEnterprise.jsp</result>
+		</action>
+
+		<action name="addCorporation" class="corporationAction"
+			method="addCorporation">
+			<result name="add">addEnterprise.jsp</result>
+		</action>
+
+		<action name="doAddCorporation" class="corporationAction"
+			method="doAddCorporation">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="editCorporation" class="corporationAction"
+			method="editCorporation">
+			<result name="success">editEnterprise.jsp</result>
+		</action>
+
+		<action name="doEditCorporation" class="corporationAction"
+			method="doEditCorporation">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeCorporation" class="corporationAction"
+			method="removeCorporation">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeCorporations" class="corporationAction"
+			method="removeCorporations">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<!-- msg action -->
+		<action name="listMsgs" class="msgAction" method="listMsgs">
+
+			<result name="success">listMsgs.jsp</result>
+		</action>
+		<action name="removeMsg" class="msgAction" method="removeMsg">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="removeMsgs" class="msgAction"
+			method="removeMsgs">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+		<action name="editMsg" class="msgAction" method="editMsg">
+			<result name="success">editMsg.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+
+		</action>
+
+		<action name="doEditMsg" class="msgAction" method="doEditMsg">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="addMsg1" class="msgAction" method="addMsg">
+			<result name="add">addMsg.jsp</result>
+
+		</action>
+		<action name="doAddMsg" class="msgAction" method="doAddMsg">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="listMessages" class="messageAction"
+			method="listMessages">
+			<result name="success">listMessages.jsp</result>
+		</action>
+		<action name="viewMessage" class="messageAction"
+			method="viewMessage">
+			<result name="success">viewMessage.jsp</result>
+		</action>
+		<action name="addMessage" class="messageAction"
+			method="addMessage">
+			<result name="add">addMessage.jsp</result>
+		</action>
+		<action name="doAddMessage" class="messageAction"
+			method="doAddMessage">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		<action name="lookupCompany" class="articleTypeAction"
+			method="lookupCompany">
+
+			<result name="success">typeSelect.jsp</result>
+		</action>
+		<!-- ajax -->
+		<action name="getCompanyHTMLS" class="articleTypeAction"
+			method="getCompanyHTMLS">
+
+		</action>
+
+		<!-- index list-->
+		<action name="listIndexs" class="reportAction"
+			method="listIndexs">
+			<result name="success">listIndexs.jsp</result>
+		</action>
+
+		<action name="addIndex" class="reportAction"
+			method="addIndex">
+
+			<result name="add">addIndex.jsp</result>
+		</action>
+
+
+		<action name="viewIndex" class="reportAction"
+			method="viewIndex">
+			<result name="success">viewIndex.jsp</result>
+		</action>
+
+		<action name="manageIndex" class="reportAction"
+			method="manageIndex">
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="editIndex" class="reportAction"
+			method="editIndex">
+
+			<result name="success">editIndex.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditIndex" class="reportAction"
+			method="doEditIndex">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="download" class="reportAction">
+			<result name="success" type="stream">
+				<param name="contentType">application/zip</param>
+				<param name="inputName">inputStream</param>
+				<!-- 使用经过转码的文件名作为下载文件名，downloadFileName属性   
+					
+					对应action类中的方法 getDownloadFileName() -->
+				<param name="contentDisposition">
+					attachment;filename="${downloadFileName}"
+				</param>
+				<param name="bufferSize">4096</param>
+			</result>
+			<result name="error">errorDownload.jsp</result>
+
+		</action>
+		
+		
+		<!-- contact list-->
+		<action name="listContacts" class="contactAction"
+			method="listContacts">
+
+			<result name="success">listContact.jsp</result>
+		</action>
+
+		<action name="addContact" class="contactAction"
+			method="addContact">
+
+			<result name="add">addContact.jsp</result>
+		</action>
+
+		<action name="doAddContact" class="contactAction"
+			method="doAddContact">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeContact" class="contactAction"
+			method="removeContact">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeContacts" class="contactAction"
+			method="removeContacts">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="editContact" class="contactAction"
+			method="editContact">
+
+			<result name="success">editContact.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditContact" class="contactAction"
+			method="doEditContact">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+		
+		
+				<!-- contactType list-->
+		<action name="listContactTypes" class="contactTypeAction"
+			method="listContactTypes">
+
+			<result name="success">listContactType.jsp</result>
+		</action>
+
+		<action name="addContactType" class="contactTypeAction"
+			method="addContactType">
+
+			<result name="add">addContactType.jsp</result>
+		</action>
+
+		<action name="doAddContactType" class="contactTypeAction"
+			method="doAddContactType">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeContactType" class="contactTypeAction"
+			method="removeContactType">
+
+			<result name="success">ajaxDone.jsp</result>
+		</action>
+
+		<action name="removeContactTypes" class="contactTypeAction"
+			method="removeContactTypes">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="editContactType" class="contactTypeAction"
+			method="editContactType">
+
+			<result name="success">editContactType.jsp</result>
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+
+		<action name="doEditContactType" class="contactTypeAction"
+			method="doEditContactType">
+
+			<result name="ajaxDone">ajaxDone.jsp</result>
+		</action>
+	</package>
+</struts>

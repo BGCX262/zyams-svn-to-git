@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="zy_premission">
+	<resultMap id="zyPremissionResult"
+		class="com.zhiye.common.bean.ZyPremission">
+		<result column="premissionId" property="premissionId"
+			jdbcType="INTEGER" />
+		<result column="section_id" property="sectionId"
+			jdbcType="INTEGER" />
+		<result column="premission_type" property="premissionType"
+			jdbcType="CHAR" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Params_Where_Clause">
+		<iterate property="oredCriteria" conjunction="or"
+			prepend="where" removeFirstPrepend="iterate">
+			<isEqual property="oredCriteria[].valid"
+				compareValue="true">
+				(
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithoutValue" conjunction="and">
+					$oredCriteria[].criteriaWithoutValue[]$
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithSingleValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithSingleValue[].condition$
+					#oredCriteria[].criteriaWithSingleValue[].value#
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithListValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithListValue[].condition$
+					<iterate
+						property="oredCriteria[].criteriaWithListValue[].values" open="("
+						close=")" conjunction=",">
+						#oredCriteria[].criteriaWithListValue[].values[]#
+					</iterate>
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithBetweenValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithBetweenValue[].condition$
+					#oredCriteria[].criteriaWithBetweenValue[].values[0]#
+					and
+					#oredCriteria[].criteriaWithBetweenValue[].values[1]#
+				</iterate>
+				)
+			</isEqual>
+		</iterate>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="zyPremissionResult"
+		parameterClass="com.zhiye.common.bean.ZyPremission">
+		select premissionId, section_id, premission_type, remarks from
+		zy_premission where premissionId = #premissionId:INTEGER#
+	</select>
+	<select id="selectByParams" resultMap="zyPremissionResult"
+		parameterClass="com.zhiye.common.bean.ZyPremissionParams">
+		select premissionId, section_id, premission_type, remarks from
+		zy_premission
+		<isParameterPresent>
+			<include refid="zy_premission.Params_Where_Clause" />
+			<isNotNull property="orderByClause">
+				order by $orderByClause$
+			</isNotNull>
+		</isParameterPresent>
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyPremission">
+		delete from zy_premission where premissionId =
+		#premissionId:INTEGER#
+	</delete>
+	<delete id="deleteByParams"
+		parameterClass="com.zhiye.common.bean.ZyPremissionParams">
+		delete from zy_premission
+		<include refid="zy_premission.Params_Where_Clause" />
+	</delete>
+	<insert id="insert"
+		parameterClass="com.zhiye.common.bean.ZyPremission">
+		<selectKey keyProperty="premissionId" resultClass="int">
+			SELECT @@IDENTITY AS premissionId
+		</selectKey>
+		insert into zy_premission ( section_id,
+		premission_type, remarks) values (
+		#sectionId:INTEGER#, #premissionType:CHAR#, #remarks:VARCHAR#)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyPremission">
+		update zy_premission set section_id = #sectionId:INTEGER#,
+		premission_type = #premissionType:CHAR#, remarks =
+		#remarks:VARCHAR# where premissionId = #premissionId:INTEGER#
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterClass="com.zhiye.common.bean.ZyPremission">
+		update zy_premission
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="sectionId">
+				section_id = #sectionId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="premissionType">
+				premission_type = #premissionType:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="remarks">
+				remarks = #remarks:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		where premissionId = #premissionId:INTEGER#
+	</update>
+	<select id="countByParams"
+		parameterClass="com.zhiye.common.bean.ZyPremissionParams"
+		resultClass="java.lang.Integer">
+		select count(*) from zy_premission
+		<include refid="zy_premission.Params_Where_Clause" />
+	</select>
+	<update id="updateByParamsSelective">
+		update zy_premission
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="record.premissionId">
+				premissionId = #record.premissionId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.sectionId">
+				section_id = #record.sectionId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.premissionType">
+				premission_type = #record.premissionType:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.remarks">
+				remarks = #record.remarks:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		<isParameterPresent>
+			<include refid="zy_premission.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<update id="updateByParams">
+		update zy_premission set premissionId =
+		#record.premissionId:INTEGER#, section_id =
+		#record.sectionId:INTEGER#, premission_type =
+		#record.premissionType:CHAR#, remarks = #record.remarks:VARCHAR#
+		<isParameterPresent>
+			<include refid="zy_premission.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<select id="findSectionIdByRoleId" resultMap="zyPremissionResult"
+		parameterClass="map">
+select  zp.premissionId,zp.premission_type,zp.remarks,zp.section_id from zy_premission zp INNER JOIN zy_role_premission zrp where zp.premissionId =zrp.premission_id and zrp.role_id=#roleId# and zp.premission_type=#typeId#
+	</select>
+</sqlMap>

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<project name="ZHIYE" default="deploy" basedir=".">
+	<property file="build.properties" />
+	<!-- ================================= 
+		target: clean              
+		================================= -->
+	<target name="clean" depends="init">
+		<delete includeEmptyDirs="true" failonerror="false">
+			<fileset dir="${project.dist}" />
+		</delete>
+	</target>
+
+	<!-- ================================= 
+		target: init              
+		================================= -->
+	<target name="init">
+		<mkdir dir="${project.dist}" />
+		<mkdir dir="${project.build.classes}" />
+	</target>
+
+	<!-- ================================= 
+		target: classpath              
+		================================= -->
+	<path id="classpath">
+		<fileset dir="${project.weblib}" includes="*.jar" />
+	</path>
+
+
+	<!-- ================================= 
+				target: compile              
+				================================= -->
+	<target name="compile" depends="clean">
+		<antcall target="init">
+		</antcall>
+		<javac encoding="utf-8" destdir="${project.build.classes}" debug="out">
+			<src path="${project.src}" />
+			<exclude name="**/test/**" />
+			<compilerarg value="-Xlint:unchecked" />
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+		</javac>
+		<copy todir="${project.build.classes}">
+			<fileset dir="${project.src}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="buildManifest" description="Use a common manifest for distribution">
+		<tstamp>
+			<format property="build.day" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		<manifest file="${project.dist}/MANIFEST.MF">
+			<attribute name="Built-By" value="${project.author}" />
+			<attribute name="Built-Date" value="${build.day}" />
+		</manifest>
+	</target>
+
+	<!-- ================================= 
+		target: jar              
+		================================= -->
+	<target name="jar" depends="compile,buildManifest" description="jar file">
+		<echo>Packing jar file...</echo>
+		<jar destfile="${project.dist}/${project.jar}" compress="yes" update="yes" manifest="${project.dist}/MANIFEST.MF">
+			<fileset dir="${project.build.classes}">
+				<include name="**/*.class" />
+				<include name="**/*.xml" />
+				<include name="**/action/*.properties" />
+				<exclude name="**/test/*.*" />
+				<exclude name="struts.xml" />
+				<exclude name="**/struts-config/*.xml" />
+			</fileset>
+		</jar>
+		<copy todir="${project.weblib}">
+			<fileset dir="${project.dist}" includes="${project.jar}" />
+		</copy>
+	</target>
+
+	<!-- =============================================== -->
+	<!-- Package all resources to war file               -->
+	<!-- =============================================== -->
+	<target name="war" depends="jar" description="war the web app">
+		<echo>Packing WAR file...</echo>
+		<delete file="${project.war}" />
+		<copy todir="${project.webclasses}">
+			<fileset dir="${project.build.classes}" includes="./*.properties" />
+			<fileset dir="${project.build.classes}" includes="./*.xml" />
+		</copy>
+		<war destfile="${project.war}" compress="true" update="true" webxml="${project.webdir}/WEB-INF/web.xml">
+			<fileset dir="${project.webdir}">
+				<exclude name="**/web.xml" />
+				<exclude name="**/*.class" />
+				<exclude name="**/test/*.*" />
+				<exclude name="**/com/**" />
+			</fileset>
+		</war>
+	</target>
+
+	<target name="deploy" depends="war">
+		<delete includeEmptyDirs="true" failonerror="false">
+			<fileset dir="${deploy.dir}">
+				<include name="**/${project.name}/**"/>
+				<include name="${project.name}.war"/>
+			</fileset>
+		</delete>
+		<copy file="${project.war}" todir="${deploy.dir}" />
+	</target>
+
+</project>

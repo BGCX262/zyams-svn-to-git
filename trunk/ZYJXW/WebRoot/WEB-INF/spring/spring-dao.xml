@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		lazy-init="false">
+		<property name="locations">
+			<list>
+				<value>classpath*:DbConfig.properties</value>
+				<value>classpath*:WebConfig.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${database.driver.class}" />
+		<property name="jdbcUrl" value="${database.url}" />
+		<!--
+			用户名Default: null
+		-->
+		<property name="user" value="${database.username}" />
+		<!--
+			密码Default: null
+		-->
+		<property name="password" value="${database.password}" />
+		<!--
+			
+			初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间Default: 3 
+		-->
+		<property name="initialPoolSize">
+			<value>5</value>
+		</property>
+		<!--
+			当连接池中的连接耗尽的时候c3p0一次同时获取的连接数Default: 3 
+		-->
+		<property name="acquireIncrement">
+			<value>3</value>
+		</property>
+		<property name="minPoolSize">
+			<value>2</value>
+		</property>
+		<!--
+			连接池中保留的最大连接数Default: 15 
+		-->
+		<property name="maxPoolSize">
+			<value>20</value>
+		</property>
+		<!--
+			最大空闲时间,60秒内未使用则连接被丢弃.若为0则永不丢弃.Default: 0 
+		-->
+		<property name="maxIdleTime">
+			<value>1800</value>
+		</property>
+		
+		
+		<property name="autoCommitOnClose">
+			<value>true</value>
+		</property>
+		<!--
+			
+			c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成.扩展这些操作可以有效的提升性能
+			通过多线程实现多个操作同时被执行.Default: 3
+			
+		-->
+		<property name="numHelperThreads">
+			<value>3</value>
+		</property>
+		<!--
+			
+			JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量.但由于预缓存的statements
+			属于单个connection而不是整个连接池.所以设置这个参数需要考虑到多方面的因素.
+			如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭.Default: 0
+			
+		-->
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+		<!--
+			
+			maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数.Default: 0
+			
+		-->
+		<property name="maxStatementsPerConnection">
+			<value>5</value>
+		</property>
+		<!--
+			每60秒检查所有连接池中的空闲连接.Default: 0 
+		-->
+		<property name="idleConnectionTestPeriod">
+			<value>1800</value>
+		</property>
+		<!--
+			定义在从数据库获取新连接失败后重复尝试的次数.Default: 30 
+		-->
+		<property name="acquireRetryAttempts">
+			<value>5</value>
+		</property>
+		<!--
+			
+			获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常.但是数据源仍有效
+			保留，并在下次调用getConnection()的时候继续尝试获取连接.如果设为true,那么在尝试
+			获取连接失败后该数据源将申明已断开并永久关闭.Default: false
+			
+		-->
+		<property name="breakAfterAcquireFailure">
+			<value>false</value>
+		</property>
+		<!--
+			用户修改系统配置参数执行前最多等待300秒.Default: 300
+		-->
+		<property name="propertyCycle">
+			<value>300</value>
+		</property>
+		<!--
+			
+			因性能消耗大请只在需要的时候使用它.如果设为true那么在每个connection提交的
+			时候都将校验其有效性.建议使用idleConnectionTestPeriod或automaticTestTable
+			等方法来提升连接测试的性能.Default: false
+			
+		-->
+		<property name="testConnectionOnCheckout">
+			<value>false</value>
+		</property>
+		<!--
+			如果设为true那么在取得连接的同时将校验连接的有效性.Default: false 
+		-->
+		<property name="testConnectionOnCheckin">
+			<value>false</value>
+		</property>
+	</bean>
+
+
+	<bean id="sqlMapClient"
+		class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation"
+			value="WEB-INF/sqlMapConfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlMapClientTemplate"
+		class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<bean id="commonDao" abstract="true"
+		class="com.zhiye.dao.CommonDAO">
+		<property name="sqlMapClientTemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	
+	<bean id="userDao" class="com.zhiye.dao.ZyUserDAOImpl" parent="commonDao"/>
+	<bean id="articleDao" class="com.zhiye.dao.ZyArticleDAOImpl" parent="commonDao"/>
+	<bean id="articleTypeDao" class="com.zhiye.dao.ZyArticleTypeDAOImpl" parent="commonDao"/>
+	<bean id="companyDao" class="com.zhiye.dao.ZyCompanyDAOImpl" parent="commonDao"/>
+	<bean id="premissionDao" class="com.zhiye.dao.ZyPremissionDAOImpl" parent="commonDao"/>
+	<bean id="partmentDao" class="com.zhiye.dao.ZyPartmentDAOImpl" parent="commonDao"/>
+	<bean id="roleDao" class="com.zhiye.dao.ZyRoleDAOImpl" parent="commonDao"/>
+	<bean id="rolePremissionDao" class="com.zhiye.dao.ZyRolePremissionDAOImpl" parent="commonDao"/>
+	<bean id="productDAO" class="com.zhiye.dao.ZyProductDAOImpl" parent="commonDao"/>
+	<bean id="dictionaryDAO" class="com.zhiye.dao.ZyDictionaryDAOImpl" parent="commonDao"/>
+	<bean id="dictclassDAO" class="com.zhiye.dao.ZyDictclassDAOImpl" parent="commonDao"/>
+	<bean id="linkDAO" class="com.zhiye.dao.ZyLinkDAOImpl" parent="commonDao"/>
+	<bean id="corporationDAO" class="com.zhiye.dao.ZyCorporationDAOImpl" parent="commonDao"/>
+	<bean id="corporationProductDAO" class="com.zhiye.dao.ZyCorporationProductDAOImpl" parent="commonDao"/>
+		<bean id="siteDAO" class="com.zhiye.dao.ZySiteDAOImpl" parent="commonDao"/>
+		<bean id="msgDAO" class="com.zhiye.dao.ZyMsgDAOImpl" parent="commonDao"/>
+		<bean id="messageDao" class="com.zhiye.dao.ZyMessageDAOImpl" parent="commonDao"/>
+		<bean id="indexDAO" class="com.zhiye.dao.ZyIndexDAOImpl" parent="commonDao"/>
+		<bean id="indexProdDAO" class="com.zhiye.dao.ZyIndexProdDAOImpl" parent="commonDao"/>
+		<bean id="contactDAO" class="com.zhiye.dao.ZyContactDAOImpl" parent="commonDao"/>
+		<bean id="contactTypeDAO" class="com.zhiye.dao.ZyContactTypeDAOImpl" parent="commonDao"/>
+			<bean id="contactAndTypeDAO" class="com.zhiye.dao.ZyContactAndTypeDAOImpl" parent="commonDao"/>
+</beans>

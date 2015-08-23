@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+ "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="${DB.MAXREQUESTS}"
+		maxSessions="${DB.MAXSESSIONS}"
+		maxTransactions="${DB.MAXTRANSACTIONS}" useStatementNamespaces="true" />
+
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_article_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_article_type_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_company_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_navigation_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_partment_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_premission_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_role_premission_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_role_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_user_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_product_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_dictionary_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_link_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_corporation_product_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_site_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_corporation_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_msg_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_message_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_index_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_index_prod_SqlMap.xml" />
+	<sqlMap resource="com/zhiye/dao/domain/xml/zy_contact_SqlMap.xml" />
+	<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_contact_type_SqlMap.xml" />
+			<sqlMap
+		resource="com/zhiye/dao/domain/xml/zy_contact_and_type_SqlMap.xml" />
+</sqlMapConfig>

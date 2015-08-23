@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="zy_site">
+	<resultMap id="zySiteResult" class="com.zhiye.common.bean.ZySite">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="view_time" property="viewTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<select id="selectByPrimaryKey" resultMap="zySiteResult"
+		parameterClass="com.zhiye.common.bean.ZySite">
+
+		select ip,view_time
+		from
+		zy_site where id = #id:BIGINT#
+	</select>
+	<select id="selectByIP" resultMap="zySiteResult"
+		parameterClass="com.zhiye.common.bean.ZySite">
+
+		select id,ip,view_time
+		from
+		zy_site where ip = #ip:VARCHAR# order by view_time desc
+	</select>
+	
+	<select id="countAllRecords" resultClass="java.lang.Long"
+		parameterClass="com.zhiye.common.bean.ZySite">
+		select count(*) from zy_site
+	</select>
+	<delete id="deleteByPrimaryKey" parameterClass="com.zhiye.common.bean.ZySite">
+		delete from
+		zy_site where id = #id:BIGINT#
+	</delete>
+	<insert id="insert" parameterClass="com.zhiye.common.bean.ZySite">
+		<selectKey keyProperty="id" resultClass="long">
+			SELECT
+			@@IDENTITY AS id
+		</selectKey>
+		insert into zy_site (ip, view_time)values (
+		#ip:VARCHAR#,
+		#viewTime:TIMESTAMP#)
+	</insert>
+	<update id="updateByPrimaryKey">
+		update zy_site set id = #record.id:BIGINT#,
+		ip =
+		#record.ip:VARCHAR#,
+		view_time =
+		#record.viewTime:TIMESTAMP#
+	</update>
+</sqlMap>

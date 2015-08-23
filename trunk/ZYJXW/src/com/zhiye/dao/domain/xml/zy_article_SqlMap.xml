@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="zy_article">
+	<resultMap id="zyArticleResult" class="com.zhiye.common.bean.ZyArticle">
+		<result column="articleId" property="articleId" jdbcType="BIGINT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="come_from" property="comeFrom" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="CHAR" />
+		<result column="typeId" property="typeId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="partment_id" property="partmentId" jdbcType="INTEGER" />
+		<result column="img_flag" property="imgFlag" jdbcType="CHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="keywords" property="keywords" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="article_type" property="articleType" jdbcType="CHAR" />
+		<result column="inner_flag" property="innerFlag" jdbcType="CHAR" />
+		<result column="click" property="click" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="zyArticleResultWithBLOBs" class="com.zhiye.common.bean.ZyArticleWithBLOBs"
+		extends="zy_article.zyArticleResult">
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="remarks" property="remarks" jdbcType="LONGVARCHAR" />
+		<result column="description" property="description" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Params_Where_Clause">
+		<iterate property="oredCriteria" conjunction="or" prepend="where"
+			removeFirstPrepend="iterate">
+			<isEqual property="oredCriteria[].valid" compareValue="true">
+				(
+				<iterate prepend="and" property="oredCriteria[].criteriaWithoutValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithoutValue[]$
+				</iterate>
+				<iterate prepend="and" property="oredCriteria[].criteriaWithSingleValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithSingleValue[].condition$
+					#oredCriteria[].criteriaWithSingleValue[].value#
+				</iterate>
+				<iterate prepend="and" property="oredCriteria[].criteriaWithListValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithListValue[].condition$
+					<iterate property="oredCriteria[].criteriaWithListValue[].values"
+						open="(" close=")" conjunction=",">
+						#oredCriteria[].criteriaWithListValue[].values[]#
+					</iterate>
+				</iterate>
+				<iterate prepend="and" property="oredCriteria[].criteriaWithBetweenValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithBetweenValue[].condition$
+					#oredCriteria[].criteriaWithBetweenValue[].values[0]#
+					and
+					#oredCriteria[].criteriaWithBetweenValue[].values[1]#
+				</iterate>
+				)
+			</isEqual>
+		</iterate>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="zyArticleResultWithBLOBs"
+		parameterClass="com.zhiye.common.bean.ZyArticle">
+
+		select articleId, title, come_from, status, typeId,
+		user_id,
+		partment_id, img_flag, create_time, update_time, keywords,
+		img_url, article_type, inner_flag, content, remarks, description,click
+		from
+		zy_article where articleId = #articleId:BIGINT#
+	</select>
+	<select id="selectByParams" resultMap="zyArticleResult"
+		parameterClass="com.zhiye.common.bean.ZyArticleParams">
+		select articleId, title, come_from, status, typeId, user_id,
+		partment_id, img_flag, create_time, update_time, keywords,
+		img_url,
+		article_type, inner_flag,click from zy_article
+		<isParameterPresent>
+			<include refid="zy_article.Params_Where_Clause" />
+			<isNotNull property="orderByClause">
+				order by $orderByClause$
+			</isNotNull>
+		</isParameterPresent>
+	</select>
+	<select id="selectPaginationByPageNum" resultMap="zyArticleResult"
+		parameterClass="map">
+		select articleId, title, come_from, status, typeId, user_id,
+		partment_id, img_flag, create_time, update_time, keywords,
+		img_url,
+		article_type, inner_flag, content, remarks, description,click
+		from zy_article
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="typeId">
+				typeId=#typeId#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="title">
+				title like '%$title$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="partment_id">
+				partment_id=#partment_id#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status=#status#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="img_flag">
+				img_flag=#img_flag#
+		</isNotEmpty>
+		</dynamic>
+		order by create_time desc limit #start#,#size#
+	</select>
+	<select id="selectPaginationByTypeId" resultMap="zyArticleResult"
+		parameterClass="map">
+		select articleId, title, come_from, status, typeId, user_id,
+		partment_id, img_flag, create_time, update_time, keywords,
+		img_url,
+		article_type, inner_flag, content, remarks, description,click
+		from zy_article
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="typeId">
+				typeId in ( $typeId$ )
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+				status=#status#
+		</isNotEmpty>
+		</dynamic>
+		order by create_time desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByTypeId" resultClass="java.lang.Integer"
+		parameterClass="map">
+		select count(*)
+		from zy_article
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="typeId">
+				typeId in ( $typeId$ )
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+				status=#status#
+		</isNotEmpty>
+		</dynamic>
+		order by create_time desc
+	</select>
+	<select id="countPaginationByPageNum" resultClass="java.lang.Integer"
+		parameterClass="map">
+		select count(*)
+		from zy_article
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="typeId">
+				typeId=#typeId#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="title">
+				title like '%$title$%'
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status=#status#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="img_flag">
+				img_flag=#img_flag#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="partment_id">
+				partment_id=#partment_id#
+		</isNotEmpty>
+		</dynamic>
+		order by create_time desc
+	</select>
+	<select id="selectByParamsWithBLOBs" resultMap="zyArticleResultWithBLOBs"
+		parameterClass="com.zhiye.common.bean.ZyArticleParams">
+		select articleId, title, come_from, status, typeId, user_id,
+		partment_id, img_flag, create_time, update_time, keywords,
+		img_url,
+		article_type, inner_flag, content, remarks, description,click
+		from zy_article
+		<isParameterPresent>
+			<include refid="zy_article.Params_Where_Clause" />
+			<isNotNull property="orderByClause">
+				order by $orderByClause$
+			</isNotNull>
+		</isParameterPresent>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterClass="com.zhiye.common.bean.ZyArticle">
+		delete from
+		zy_article where articleId = #articleId:BIGINT#
+	</delete>
+	<delete id="deleteByParams" parameterClass="com.zhiye.common.bean.ZyArticleParams">
+		delete from zy_article
+		<include refid="zy_article.Params_Where_Clause" />
+	</delete>
+	<insert id="insert" parameterClass="com.zhiye.common.bean.ZyArticleWithBLOBs">
+		<selectKey keyProperty="articleId" resultClass="long">
+			SELECT
+			@@IDENTITY AS articleId
+		</selectKey>
+		insert into zy_article (title, come_from, status, typeId,
+		user_id,
+		partment_id, img_flag, create_time, update_time,
+		keywords, img_url,
+		article_type, inner_flag, content, remarks,
+		description,click) values (
+		#title:VARCHAR#, #comeFrom:VARCHAR#,
+		#status:CHAR#, #typeId:INTEGER#,
+		#userId:INTEGER#,
+		#partmentId:INTEGER#, #imgFlag:CHAR#,
+		#createTime:TIMESTAMP#,
+		#updateTime:TIMESTAMP#, #keywords:VARCHAR#,
+		#imgUrl:VARCHAR#,
+		#articleType:CHAR#, #innerFlag:CHAR#,
+		#content:LONGVARCHAR#,
+		#remarks:LONGVARCHAR#,
+		#description:LONGVARCHAR#,
+		#click:INTEGER#)
+	</insert>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterClass="com.zhiye.common.bean.ZyArticleWithBLOBs">
+		update
+		zy_article set title = #title:VARCHAR#, come_from =
+		#comeFrom:VARCHAR#, status = #status:CHAR#, typeId =
+		#typeId:INTEGER#,
+		user_id = #userId:INTEGER#, partment_id =
+		#partmentId:INTEGER#,
+		img_flag = #imgFlag:CHAR#, create_time =
+		#createTime:TIMESTAMP#,
+		update_time = #updateTime:TIMESTAMP#,
+		keywords = #keywords:VARCHAR#,
+		img_url = #imgUrl:VARCHAR#,
+		article_type = #articleType:CHAR#,
+		inner_flag =
+		#innerFlag:CHAR#, content = #content:LONGVARCHAR#, remarks
+		=
+		#remarks:LONGVARCHAR#, description = #description:LONGVARCHAR#,
+		click =#click:INTEGER#
+		where
+		articleId = #articleId:BIGINT#
+	</update>
+	<update id="updateByPrimaryKey" parameterClass="com.zhiye.common.bean.ZyArticle">
+
+		update zy_article
+		set title = #title:VARCHAR#, come_from =
+		#comeFrom:VARCHAR#, status =
+		#status:CHAR#, typeId =
+		#typeId:INTEGER#, user_id = #userId:INTEGER#,
+		partment_id =
+		#partmentId:INTEGER#, img_flag = #imgFlag:CHAR#,
+		create_time =
+		#createTime:TIMESTAMP#, update_time =
+		#updateTime:TIMESTAMP#,
+		keywords = #keywords:VARCHAR#, img_url =
+		#imgUrl:VARCHAR#,
+		article_type = #articleType:CHAR#, inner_flag =
+		#innerFlag:CHAR#,
+		click =#click:INTEGER#
+		where articleId = #articleId:BIGINT#
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterClass="com.zhiye.common.bean.ZyArticleWithBLOBs">
+
+		update zy_article
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="title">
+				title = #title:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="comeFrom">
+				come_from =
+				#comeFrom:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="status">
+				status = #status:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="typeId">
+				typeId = #typeId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="userId">
+				user_id = #userId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="partmentId">
+				partment_id =
+				#partmentId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="imgFlag">
+				img_flag = #imgFlag:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="createTime">
+				create_time =
+				#createTime:TIMESTAMP#
+			</isNotNull>
+			<isNotNull prepend="," property="updateTime">
+				update_time =
+				#updateTime:TIMESTAMP#
+			</isNotNull>
+			<isNotNull prepend="," property="keywords">
+				keywords =
+				#keywords:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="imgUrl">
+				img_url = #imgUrl:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="articleType">
+				article_type =
+				#articleType:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="innerFlag">
+				inner_flag =
+				#innerFlag:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="content">
+				content =
+				#content:LONGVARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="remarks">
+				remarks =
+				#remarks:LONGVARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="description">
+				description =
+				#description:LONGVARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="click">
+				click = #click:INTEGER#
+			</isNotNull>
+		</dynamic>
+		where articleId = #articleId:BIGINT#
+	</update>
+	<select id="countByParams" parameterClass="com.zhiye.common.bean.ZyArticleParams"
+		resultClass="java.lang.Integer">
+		select count(*) from zy_article
+		<include refid="zy_article.Params_Where_Clause" />
+	</select>
+	<update id="updateByParamsSelective">
+
+		update zy_article
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="record.articleId">
+				articleId =
+				#record.articleId:BIGINT#
+			</isNotNull>
+			<isNotNull prepend="," property="record.title">
+				title =
+				#record.title:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.comeFrom">
+				come_from =
+				#record.comeFrom:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.status">
+				status =
+				#record.status:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.typeId">
+				typeId =
+				#record.typeId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.userId">
+				user_id =
+				#record.userId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.partmentId">
+				partment_id =
+				#record.partmentId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.imgFlag">
+				img_flag =
+				#record.imgFlag:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.createTime">
+				create_time =
+				#record.createTime:TIMESTAMP#
+			</isNotNull>
+			<isNotNull prepend="," property="record.updateTime">
+				update_time =
+				#record.updateTime:TIMESTAMP#
+			</isNotNull>
+			<isNotNull prepend="," property="record.keywords">
+				keywords =
+				#record.keywords:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.imgUrl">
+				img_url =
+				#record.imgUrl:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.articleType">
+				article_type =
+				#record.articleType:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.innerFlag">
+				inner_flag =
+				#record.innerFlag:CHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.content">
+				content =
+				#record.content:LONGVARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.remarks">
+				remarks =
+				#record.remarks:LONGVARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="record.description">
+				description =
+				#record.description:LONGVARCHAR#
+			</isNotNull>
+				<isNotNull prepend="," property="click">
+				click = #record.click:INTEGER#
+			</isNotNull>
+		</dynamic>
+		<isParameterPresent>
+			<include refid="zy_article.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<update id="updateByParamsWithBLOBs">
+		update zy_article set articleId = #record.articleId:BIGINT#,
+		title =
+		#record.title:VARCHAR#, come_from =
+		#record.comeFrom:VARCHAR#, status =
+		#record.status:CHAR#,
+		typeId = #record.typeId:INTEGER#, user_id =
+		#record.userId:INTEGER#, partment_id =
+		#record.partmentId:INTEGER#,
+		img_flag = #record.imgFlag:CHAR#,
+		create_time =
+		#record.createTime:TIMESTAMP#, update_time =
+		#record.updateTime:TIMESTAMP#, keywords =
+		#record.keywords:VARCHAR#,
+		img_url = #record.imgUrl:VARCHAR#,
+		article_type =
+		#record.articleType:CHAR#, inner_flag =
+		#record.innerFlag:CHAR#,
+		content = #record.content:LONGVARCHAR#,
+		remarks =
+		#record.remarks:LONGVARCHAR#, description =
+		#record.description:LONGVARCHAR#,
+		click =#record.click:INTEGER#
+		<isParameterPresent>
+			<include refid="zy_article.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<update id="updateByParams">
+		update zy_article set articleId = #record.articleId:BIGINT#,
+		title =
+		#record.title:VARCHAR#, come_from =
+		#record.comeFrom:VARCHAR#, status =
+		#record.status:CHAR#,
+		typeId = #record.typeId:INTEGER#, user_id =
+		#record.userId:INTEGER#, partment_id =
+		#record.partmentId:INTEGER#,
+		img_flag = #record.imgFlag:CHAR#,
+		create_time =
+		#record.createTime:TIMESTAMP#, update_time =
+		#record.updateTime:TIMESTAMP#, keywords =
+		#record.keywords:VARCHAR#,
+		img_url = #record.imgUrl:VARCHAR#,
+		article_type =
+		#record.articleType:CHAR#, inner_flag =
+		#record.innerFlag:CHAR#,
+		click =#record.click:INTEGER#
+		<isParameterPresent>
+			<include refid="zy_article.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	
+	
+	
+	
+		<select id="searchForPagerWithRoleId" resultMap="zyArticleResult"
+		parameterClass="map">
+		select articleId, title, come_from, status, typeId, user_id,
+		partment_id, img_flag, create_time, update_time, keywords,
+		img_url,
+		article_type, inner_flag, content, remarks, description,click
+		from zy_article where status=#status# and typeId in (select  section_id from zy_premission where premissionid in (select premission_id from zy_role_premission where role_id=#roleId#) )
+		order by create_time desc limit #start#,#size#
+	</select>
+	<select id="countSearchPagerWithRoleId" resultClass="java.lang.Integer"
+		parameterClass="map">
+		select count(*)
+		from zy_article where status=#status# and typeId in (select  section_id from zy_premission where premissionid in (select premission_id from zy_role_premission where role_id=#roleId#) )
+		order by create_time desc
+	</select>
+	
+	
+	
+	
+	
+	
+</sqlMap>

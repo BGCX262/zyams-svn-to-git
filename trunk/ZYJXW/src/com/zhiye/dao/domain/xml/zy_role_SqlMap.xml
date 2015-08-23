@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="zy_role">
+	<resultMap id="zyRoleResult" class="com.zhiye.common.bean.ZyRole">
+		<result column="roleId" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Params_Where_Clause">
+		<iterate property="oredCriteria" conjunction="or"
+			prepend="where" removeFirstPrepend="iterate">
+			<isEqual property="oredCriteria[].valid"
+				compareValue="true">
+				(
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithoutValue" conjunction="and">
+					$oredCriteria[].criteriaWithoutValue[]$
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithSingleValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithSingleValue[].condition$
+					#oredCriteria[].criteriaWithSingleValue[].value#
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithListValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithListValue[].condition$
+					<iterate
+						property="oredCriteria[].criteriaWithListValue[].values" open="("
+						close=")" conjunction=",">
+						#oredCriteria[].criteriaWithListValue[].values[]#
+					</iterate>
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithBetweenValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithBetweenValue[].condition$
+					#oredCriteria[].criteriaWithBetweenValue[].values[0]#
+					and
+					#oredCriteria[].criteriaWithBetweenValue[].values[1]#
+				</iterate>
+				)
+			</isEqual>
+		</iterate>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="zyRoleResult"
+		parameterClass="com.zhiye.common.bean.ZyRole">
+		select roleId, role_name from zy_role where roleId =
+		#roleId:INTEGER#
+	</select>
+	<select id="selectByParams" resultMap="zyRoleResult"
+		parameterClass="com.zhiye.common.bean.ZyRoleParams">
+		select roleId, role_name from zy_role
+		<isParameterPresent>
+			<include refid="zy_role.Params_Where_Clause" />
+			<isNotNull property="orderByClause">
+				order by $orderByClause$
+			</isNotNull>
+		</isParameterPresent>
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyRole">
+		delete from zy_role where roleId = #roleId:INTEGER#
+	</delete>
+	<delete id="deleteByParams"
+		parameterClass="com.zhiye.common.bean.ZyRoleParams">
+		delete from zy_role
+		<include refid="zy_role.Params_Where_Clause" />
+	</delete>
+	<insert id="insert" parameterClass="com.zhiye.common.bean.ZyRole">
+		<selectKey keyProperty="roleId" resultClass="int">
+			SELECT @@IDENTITY AS roleId
+		</selectKey>
+		insert into zy_role ( role_name) values
+		( #roleName:VARCHAR#)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyRole">
+		update zy_role set role_name = #roleName:VARCHAR# where roleId
+		= #roleId:INTEGER#
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterClass="com.zhiye.common.bean.ZyRole">
+		update zy_role
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="roleName">
+				role_name = #roleName:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		where roleId = #roleId:INTEGER#
+	</update>
+	<select id="countByParams"
+		parameterClass="com.zhiye.common.bean.ZyRoleParams"
+		resultClass="java.lang.Integer">
+		select count(*) from zy_role
+		<include refid="zy_role.Params_Where_Clause" />
+	</select>
+	<update id="updateByParamsSelective">
+		update zy_role
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="record.roleId">
+				roleId = #record.roleId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.roleName">
+				role_name = #record.roleName:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		<isParameterPresent>
+			<include refid="zy_role.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<update id="updateByParams">
+		update zy_role set roleId = #record.roleId:INTEGER#, role_name
+		= #record.roleName:VARCHAR#
+		<isParameterPresent>
+			<include refid="zy_role.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	
+		<select id="selectPaginationByPageNum" resultMap="zyRoleResult"
+		parameterClass="map">
+		select roleId,role_name
+		from zy_role
+		<dynamic prepend="where" >
+		<isNotEmpty prepend="and" property="role_name">
+			role_name like '%$role_name$%'
+		</isNotEmpty>
+		</dynamic>
+				 limit #start#,#size#
+	</select>
+		<select id="countPaginationByPageNum" resultClass="java.lang.Integer"
+		parameterClass="map">
+		select count(*)
+		from zy_role
+		<dynamic prepend="where" >
+		<isNotEmpty prepend="and" property="role_name">
+			role_name like '%$role_name$%'
+		</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	
+</sqlMap>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="zy_navigation">
+	<resultMap id="zyNavigationResult"
+		class="com.zhiye.common.bean.ZyNavigation">
+		<result column="navId" property="naviId" jdbcType="INTEGER" />
+		<result column="navi_name" property="naviName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Params_Where_Clause">
+		<iterate property="oredCriteria" conjunction="or"
+			prepend="where" removeFirstPrepend="iterate">
+			<isEqual property="oredCriteria[].valid"
+				compareValue="true">
+				(
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithoutValue" conjunction="and">
+					$oredCriteria[].criteriaWithoutValue[]$
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithSingleValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithSingleValue[].condition$
+					#oredCriteria[].criteriaWithSingleValue[].value#
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithListValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithListValue[].condition$
+					<iterate
+						property="oredCriteria[].criteriaWithListValue[].values" open="("
+						close=")" conjunction=",">
+						#oredCriteria[].criteriaWithListValue[].values[]#
+					</iterate>
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithBetweenValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithBetweenValue[].condition$
+					#oredCriteria[].criteriaWithBetweenValue[].values[0]#
+					and
+					#oredCriteria[].criteriaWithBetweenValue[].values[1]#
+				</iterate>
+				)
+			</isEqual>
+		</iterate>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="zyNavigationResult"
+		parameterClass="com.zhiye.common.bean.ZyNavigation">
+		select navId, navi_name from zy_navigation where navId =
+		#naviId:INTEGER#
+	</select>
+	<select id="selectByParams" resultMap="zyNavigationResult"
+		parameterClass="com.zhiye.common.bean.ZyNavigationParams">
+		select navId, navi_name from zy_navigation
+		<isParameterPresent>
+			<include refid="zy_navigation.Params_Where_Clause" />
+			<isNotNull property="orderByClause">
+				order by $orderByClause$
+			</isNotNull>
+		</isParameterPresent>
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyNavigation">
+		delete from zy_navigation where navId = #naviId:INTEGER#
+	</delete>
+	<delete id="deleteByParams"
+		parameterClass="com.zhiye.common.bean.ZyNavigationParams">
+		delete from zy_navigation
+		<include refid="zy_navigation.Params_Where_Clause" />
+	</delete>
+	<insert id="insert"
+		parameterClass="com.zhiye.common.bean.ZyNavigation">
+		<selectKey keyProperty="navId" resultClass="int">
+			SELECT @@IDENTITY AS navId
+		</selectKey>
+		insert into zy_navigation (navi_name) values
+		(#naviName:VARCHAR#)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyNavigation">
+		update zy_navigation set navi_name = #naviName:VARCHAR# where
+		navId = #naviId:INTEGER#
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterClass="com.zhiye.common.bean.ZyNavigation">
+		update zy_navigation
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="naviName">
+				navi_name = #naviName:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		where navId = #naviId:INTEGER#
+	</update>
+	<select id="countByParams"
+		parameterClass="com.zhiye.common.bean.ZyNavigationParams"
+		resultClass="java.lang.Integer">
+		select count(*) from zy_navigation
+		<include refid="zy_navigation.Params_Where_Clause" />
+	</select>
+	<update id="updateByParamsSelective">
+		update zy_navigation
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="record.naviId">
+				navId = #record.naviId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.naviName">
+				navi_name = #record.naviName:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		<isParameterPresent>
+			<include refid="zy_navigation.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<update id="updateByParams">
+		update zy_navigation set navId = #record.naviId:INTEGER#,
+		navi_name = #record.naviName:VARCHAR#
+		<isParameterPresent>
+			<include refid="zy_navigation.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+</sqlMap>

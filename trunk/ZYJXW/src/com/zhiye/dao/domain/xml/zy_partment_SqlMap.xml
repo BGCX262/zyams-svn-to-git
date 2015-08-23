@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="zy_partment">
+	<resultMap id="zyPartmentResult"
+		class="com.zhiye.common.bean.ZyPartment">
+		<result column="partmentId" property="partmentId"
+			jdbcType="INTEGER" />
+		<result column="partment_name" property="partmentName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Params_Where_Clause">
+		<iterate property="oredCriteria" conjunction="or"
+			prepend="where" removeFirstPrepend="iterate">
+			<isEqual property="oredCriteria[].valid"
+				compareValue="true">
+				(
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithoutValue" conjunction="and">
+					$oredCriteria[].criteriaWithoutValue[]$
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithSingleValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithSingleValue[].condition$
+					#oredCriteria[].criteriaWithSingleValue[].value#
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithListValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithListValue[].condition$
+					<iterate
+						property="oredCriteria[].criteriaWithListValue[].values" open="("
+						close=")" conjunction=",">
+						#oredCriteria[].criteriaWithListValue[].values[]#
+					</iterate>
+				</iterate>
+				<iterate prepend="and"
+					property="oredCriteria[].criteriaWithBetweenValue"
+					conjunction="and">
+					$oredCriteria[].criteriaWithBetweenValue[].condition$
+					#oredCriteria[].criteriaWithBetweenValue[].values[0]#
+					and
+					#oredCriteria[].criteriaWithBetweenValue[].values[1]#
+				</iterate>
+				)
+			</isEqual>
+		</iterate>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="zyPartmentResult"
+		parameterClass="com.zhiye.common.bean.ZyPartment">
+		select partmentId, partment_name from zy_partment where
+		partmentId = #partmentId:INTEGER#
+	</select>
+	<select id="selectByParams" resultMap="zyPartmentResult"
+		parameterClass="com.zhiye.common.bean.ZyPartmentParams">
+		select partmentId, partment_name from zy_partment
+		<isParameterPresent>
+			<include refid="zy_partment.Params_Where_Clause" />
+			<isNotNull property="orderByClause">
+				order by $orderByClause$
+			</isNotNull>
+		</isParameterPresent>
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyPartment">
+		delete from zy_partment where partmentId = #partmentId:INTEGER#
+	</delete>
+	<delete id="deleteByParams"
+		parameterClass="com.zhiye.common.bean.ZyPartmentParams">
+		delete from zy_partment
+		<include refid="zy_partment.Params_Where_Clause" />
+	</delete>
+	<insert id="insert"
+		parameterClass="com.zhiye.common.bean.ZyPartment">
+			<selectKey keyProperty="partmentId" resultClass="int">
+			SELECT @@IDENTITY AS partmentId
+		</selectKey>
+		insert into zy_partment ( partment_name) values
+		(#partmentName:VARCHAR#)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterClass="com.zhiye.common.bean.ZyPartment">
+		update zy_partment set partment_name = #partmentName:VARCHAR#
+		where partmentId = #partmentId:INTEGER#
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterClass="com.zhiye.common.bean.ZyPartment">
+		update zy_partment
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="partmentName">
+				partment_name = #partmentName:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		where partmentId = #partmentId:INTEGER#
+	</update>
+	<select id="countByParams"
+		parameterClass="com.zhiye.common.bean.ZyPartmentParams"
+		resultClass="java.lang.Integer">
+		select count(*) from zy_partment
+		<include refid="zy_partment.Params_Where_Clause" />
+	</select>
+	<update id="updateByParamsSelective">
+		update zy_partment
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="record.partmentId">
+				partmentId = #record.partmentId:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="record.partmentName">
+				partment_name = #record.partmentName:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		<isParameterPresent>
+			<include refid="zy_partment.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	<update id="updateByParams">
+		update zy_partment set partmentId =
+		#record.partmentId:INTEGER#, partment_name =
+		#record.partmentName:VARCHAR#
+		<isParameterPresent>
+			<include refid="zy_partment.Params_Where_Clause" />
+		</isParameterPresent>
+	</update>
+	
+		<select id="selectPaginationByPageNum" resultMap="zyPartmentResult"
+		parameterClass="map">
+		select partmentId, partment_name from zy_partment 
+		<dynamic prepend="where" >
+		<isNotEmpty prepend="and" property="partment_name">
+			partment_name like '%$partment_name$%'
+		</isNotEmpty>
+		</dynamic>
+				 limit #start#,#size#
+	</select>
+		<select id="countPaginationByPageNum" resultClass="java.lang.Integer"
+		parameterClass="map">
+		select count(*)
+		from zy_partment
+		<dynamic prepend="where" >
+		<isNotEmpty prepend="and" property="partment_name">
+			partment_name like '%$partment_name$%'
+		</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>

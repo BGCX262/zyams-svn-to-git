@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE abatorConfiguration PUBLIC "-//Apache Software Foundation//DTD Abator for iBATIS Configuration 1.0//EN" "http://ibatis.apache.org/dtd/abator-config_1_0.dtd" >
+<abatorConfiguration>
+  <abatorContext>
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/zy_jxw" userId="root" password="root">
+      <classPathEntry location="E:\workspace\ZYJXW\WebRoot\WEB-INF\lib\mysql-connector-java-5.1.18-bin.jar" />
+    </jdbcConnection>
+    <javaModelGenerator targetPackage="com.zhiye.common.bean" targetProject="ZYJXW/src" />
+    <sqlMapGenerator targetPackage="com.zhiye.dao.domain.xml" targetProject="ZYJXW/src" />
+    <daoGenerator targetPackage="com.zhiye.dao" type="SPRING" targetProject="ZYJXW/src"  />
+		<!-- <table tableName="zy_user" />
+		<table tableName="zy_partment" />
+		<table tableName="zy_company" />
+		<table tableName="zy_role" />
+		<table tableName="zy_role_premission" />
+		<table tableName="zy_premission" />
+		<table tableName="zy_navigation" />
+		<table tableName="zy_article" />
+		<table tableName="zy_article_type" /> 
+		<table tableName="zy_product" />
+		<table tableName="zy_dictionary"/>
+		<table tableName="zy_dictclass"/>
+		<table tableName="zy_link"/>
+		<table tableName="zy_corporation_product"/>
+		<table tableName="zy_corporation"/>
+		<table tableName="zy_index"/>
+		<table tableName="zy_index_prod"/>
+		<table tableName="zy_contact"/>
+		<table tableName="zy_contact_type"/>-->
+				<table tableName="zy_contact_and_type"/>
+</abatorContext>
+</abatorConfiguration>

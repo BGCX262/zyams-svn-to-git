@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+
+	<include file="struts-default.xml" />
+	<include file="struts-config/struts-login.xml"></include>
+		<include file="struts-config/struts-admin.xml"></include>
+		<include file="struts-config/struts-web.xml"></include>
+		<constant name="struts.multipart.maxSize" value="10701096"/>
+	<package name="zhiye" extends="struts-default">
+	<interceptors>
+			<interceptor name="authority"
+				class="authorizationInterceptor">
+			</interceptor>
+			<interceptor name="site"
+				class="siteInterceptor">
+			</interceptor>
+			<interceptor-stack name="auth">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="authority" />
+				<interceptor-ref name="site" />
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="auth" />
+	
+		<global-results>
+			<result name="changePass">/admin/changePass.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="noRight">/admin/common/no-right.html</result>
+			<result name="loginAdmin" type="redirect">
+				/admin/loginError.jsp
+			</result>
+				<result name="loginCorp" type="redirect">
+				/web/login.jsp
+			</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.Exception">
+			</exception-mapping>
+		</global-exception-mappings>
+
+	</package>
+</struts>

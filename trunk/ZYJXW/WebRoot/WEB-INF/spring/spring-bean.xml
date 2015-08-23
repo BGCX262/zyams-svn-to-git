@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:customize="http://www.coremedia.com/2007/coremedia-spring-beans-customization"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+ http://www.coremedia.com/2007/coremedia-sprin g-beans-customization http://www.coremedia.com/2007/coremedia-sprin g-beans-customization.xsd
+ http://www.sprin gframework.org/schema/tx http://www.sprin gframework.org/schema/tx/sprin g-tx-2.0.xsd
+ http://www.sprin gframework.org/schema/util http://www.sprin gframework.org/schema/util/sprin g-util-2.0.xsd ">
+
+	<bean id="authorizationInterceptor" scope="prototype"
+		class="com.zhiye.web.interceptor.AuthorizationInterceptor">
+	</bean>
+	<bean id="siteInterceptor" scope="prototype"
+		class="com.zhiye.web.interceptor.SiteInterceptor">
+		<property name="siteService" ref="siteService"></property>
+	</bean>
+</beans>
